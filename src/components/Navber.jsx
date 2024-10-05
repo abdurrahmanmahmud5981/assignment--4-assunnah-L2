@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-const Navber = ({search,handleSearch,sortA_to_Z}) => {
-  console.log(sortA_to_Z());
+const Navber = ({search,handleSearch,sortA_to_Z,sortZ_to_A}) => {
   return (
     <>
       <div className=" shadow-lg bg-secondary max-w-screen-xl mx-auto ">
@@ -29,12 +28,14 @@ const Navber = ({search,handleSearch,sortA_to_Z}) => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow space-y-2 font-semibold"
               >
                 <li className="border rounded-lg">
-                  <a  className="justify-between">
+                  <a onClick={sortA_to_Z} className="justify-between">
                     Country A to Z<span className="badge">New</span>
                   </a>
                 </li>
                 <li className="border rounded-lg">
-                  <a>Country Z to A</a>
+                <a onClick={sortZ_to_A} className="justify-between">
+                    Country A to Z<span className="badge">New</span>
+                  </a>
                 </li>
                 <li className="border rounded-lg">
                   <a>Country 0 to 9</a>

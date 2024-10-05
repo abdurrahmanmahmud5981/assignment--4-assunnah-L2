@@ -8,7 +8,6 @@ const Country = ({ country, handleDetailsOfCountry }) => {
     setIsVisted(!isVisited);
     e.target.setAttribute("disabled",true);
   }
-  // console.log(country?.region !== 'Europe' ? "true": 'Country Not found' );
   return (
     <>
       <div className="card glass ">
@@ -40,7 +39,6 @@ const Country = ({ country, handleDetailsOfCountry }) => {
             </button>
           </div>
         </div>
-        {/* <Modal key={country.cca3}country={modal}/>  */}
       </div>
     </>
   );

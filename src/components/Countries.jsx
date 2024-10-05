@@ -39,7 +39,15 @@ const Countries = () => {
 
   //  sorting function
   function sortA_to_Z() {
-
+    setFilteredCountry([...filteredCountry].sort((a, b) => 
+      a?.name?.common.localeCompare(b?.name?.common)
+    ));
+  }
+  
+  function sortZ_to_A() {
+    setFilteredCountry([...filteredCountry].sort((a, b) => 
+      b?.name?.common.localeCompare(a?.name?.common)
+    ));
   }
 
   // handleSearch
@@ -95,7 +103,7 @@ const Countries = () => {
         </div>
       )}
       {/* navber */}
-      <Navber search={search} sortA_to_Z={sortA_to_Z} handleSearch={handleSearch} />
+      <Navber search={search} sortA_to_Z={sortA_to_Z} sortZ_to_A={sortZ_to_A}  handleSearch={handleSearch} />
 
       {/* cardes */}
       <div className="max-w-screen-xl mx-auto my-10 mb-20">
