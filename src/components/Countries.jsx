@@ -17,7 +17,7 @@ const Countries = () => {
       setCountries(data);
       setFilteredCountry(data);
     };
-    return () => fetchCountries();
+    fetchCountries();
   }, []);
 
   const handleDetailsOfCountry = (country) => {
