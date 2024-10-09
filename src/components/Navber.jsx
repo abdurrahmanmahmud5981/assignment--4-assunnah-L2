@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Navber = ({search,handleSearch,sortA_to_Z,sortZ_to_A}) => {
+const Navber = ({ search, handleSearch, sortA_to_Z, sortZ_to_A }) => {
   return (
     <>
       <div className=" shadow-lg bg-secondary max-w-screen-xl mx-auto ">
@@ -32,8 +32,8 @@ const Navber = ({search,handleSearch,sortA_to_Z,sortZ_to_A}) => {
                     Country A to Z<span className="badge">New</span>
                   </a>
                 </li>
-                <li className="border rounded-lg">
-                <a onClick={sortZ_to_A} className="justify-between">
+                <li onClick={sortZ_to_A} className="border rounded-lg">
+                  <a className="justify-between">
                     Country A to Z<span className="badge">New</span>
                   </a>
                 </li>

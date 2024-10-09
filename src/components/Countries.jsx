@@ -11,13 +11,35 @@ const Countries = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchCountries = async () => {
-      const res = await fetch("https://restcountries.com/v3.1/all");
-      const data = await res.json();
-      setCountries(data);
-      setFilteredCountry(data);
-    };
-    fetchCountries();
+    const storedCountry = localStorage.getItem("countries");
+    if (storedCountry) {
+      console.log(JSON.parse(storedCountry));
+      setCountries(JSON.parse(storedCountry));
+      setFilteredCountry(JSON.parse(storedCountry));
+    } else {
+      try {
+        const fetchCountries = async () => {
+          const fecthRequest = await fetch(
+            "https://restcountries.com/v3.1/all"
+          );
+          const fecthData = await fecthRequest.json();
+
+          const data = fecthData.map((country) => {
+            return {
+              ...country,
+              isVisibale: false,
+            };
+          });
+          localStorage.setItem("countries", JSON.stringify(data));
+          console.log(data);
+          setCountries(data);
+          setFilteredCountry(data);
+        };
+        fetchCountries();
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   }, []);
 
   const handleDetailsOfCountry = (country) => {
@@ -28,7 +50,6 @@ const Countries = () => {
       }
     );
 
-
     setDetailsOfCountry({
       ...country,
       flag: country?.flags?.svg,
@@ -37,21 +58,52 @@ const Countries = () => {
     setIsModalOpen(true);
   };
 
-  //  sorting function
+  /**
+   *  sorting function
+   */
   function sortA_to_Z() {
-    setFilteredCountry([...filteredCountry].sort((a, b) => 
-      a?.name?.common.localeCompare(b?.name?.common)
-    ));
-  }
-  
-  function sortZ_to_A() {
-    setFilteredCountry([...filteredCountry].sort((a, b) => 
-      b?.name?.common.localeCompare(a?.name?.common)
-    ));
+    // const b = filteredCountry.map((a)=>console.log(a))
+    // console.log(b);
+    // console.log("sortA_to_Z");
+    // const sortCountries = [...countries].sort((a, b) =>{
+    //   // console.log(a.name.commn);
+    //  return a?.name?.common.localeCompare(b?.name?.common)
+    // })
+    // setFilteredCountry(sortCountries);
+    //  return setFilteredCountry([...countries].sort((a, b) =>
+    //     a?.name?.common.localeCompare(b?.name?.common)
+    //   ));
   }
 
+  function sortZ_to_A() {
+    setFilteredCountry(
+      [...filteredCountry].sort((a, b) =>
+        b?.name?.common.localeCompare(a?.name?.common)
+      )
+    );
+  }
+
+  /**
+   *  searching functionality for country
+   */
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (search) {
+        const filtered = countries.filter((country) =>
+          country?.name?.common.toLowerCase().includes(search.toLowerCase())
+        );
+        setFilteredCountry(filtered);
+      } else {
+        setFilteredCountry(countries);
+      }
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [search, countries]);
   // handleSearch
-  const handleSearch = () => {};
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+  };
 
   return (
     <>
@@ -60,15 +112,16 @@ const Countries = () => {
         <div
           className=" fixed inset-0 bg-gray-800 bg-opacity-90 flex justify-center items-center z-50 "
           onClick={(e) => {
-           
             setIsModalOpen(false);
           }}
         >
-          <div onClick={e=> e.stopPropagation()} className=" bg-gray-200 p-5 rounded-lg max-w-xl sm:w-1/2 shadow-lg m-7 ">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className=" bg-gray-200 p-5 rounded-lg max-w-xl sm:w-1/2 shadow-lg m-7 "
+          >
             <div className="flex  flex-col justify-between gap-1">
               <h2 className=" text-xl font-bold">{country?.name?.common} </h2>
               <img
-                
                 src={country.flags.png}
                 alt={country?.name?.alt}
                 className="w-full h-52 object-fill"
@@ -78,8 +131,8 @@ const Countries = () => {
                 {country?.capital[0]}
               </h3>
               <h3>
-                <span className=" font-semibold">Region</span> : 
-                { country?.region}
+                <span className=" font-semibold">Region</span> :
+                {country?.region}
               </h3>
               <h3>
                 <span className=" font-semibold">Population</span> :
@@ -103,7 +156,12 @@ const Countries = () => {
         </div>
       )}
       {/* navber */}
-      <Navber search={search} sortA_to_Z={sortA_to_Z} sortZ_to_A={sortZ_to_A}  handleSearch={handleSearch} />
+      <Navber
+        search={search}
+        sortA_to_Z={sortA_to_Z}
+        sortZ_to_A={sortZ_to_A}
+        handleSearch={handleSearch}
+      />
 
       {/* cardes */}
       <div className="max-w-screen-xl mx-auto my-10 mb-20">
@@ -111,9 +169,11 @@ const Countries = () => {
           {filteredCountry.length > 0 ? (
             filteredCountry
               .sort((a, b) => {
-                return b?.population - a?.population
+                return b?.population - a?.population;
                 // eslint-disable-next-line no-unreachable
-                {/* return a?.name?.common.localeCompare(b?.name?.common); */}
+                {
+                  /* return a?.name?.common.localeCompare(b?.name?.common); */
+                }
               })
               .filter(
                 (e) =>
@@ -124,7 +184,6 @@ const Countries = () => {
               )
               .map((e) => (
                 <Country
-                 
                   key={e?.cca3}
                   country={e}
                   handleDetailsOfCountry={handleDetailsOfCountry}
@@ -137,8 +196,6 @@ const Countries = () => {
           )}
         </div>
       </div>
-
-
     </>
   );
 };

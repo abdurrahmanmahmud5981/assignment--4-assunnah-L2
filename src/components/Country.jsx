@@ -6,14 +6,13 @@ const Country = ({ country, handleDetailsOfCountry }) => {
   function handleBtnClick(e) {
     handleDetailsOfCountry(country);
     setIsVisted(!isVisited);
-    e.target.setAttribute("disabled",true);
+    e.target.setAttribute("disabled", true);
   }
   return (
     <>
       <div className="card glass ">
         <figure>
           <img
-  
             src={country.flags.png}
             alt={country?.name?.alt}
             className="w-full h-52 "
@@ -30,12 +29,11 @@ const Country = ({ country, handleDetailsOfCountry }) => {
             {country?.population.toLocaleString()}
           </h3>
           <div className="card-actions">
-            <button 
+            <button
               onClick={handleBtnClick}
-              className= "btn bg-primary text-secondary hover:text-primary hover:bg-secondary w-full"
-           
+              className="btn bg-primary text-secondary hover:text-primary hover:bg-secondary w-full"
             >
-             {isVisited ? "Visited" : "Details"}
+              {isVisited ? "Visited" : "Details"}
             </button>
           </div>
         </div>
